@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - [اسم المتجر]</title>
+    <style>
+        /* تنسيق الصفحة العامة */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* تنسيق الحاوية */
+        .container {
+            background-color: #121212;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        /* عنوان الصفحة */
+        h2 {
+            text-align: center;
+            color: #00ffff;
+        }
+
+        /* تنسيق نموذج التسجيل */
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .signup-form label {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .signup-form input {
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #00ffff;
+            background-color: #333;
+            color: white;
+        }
+
+        .signup-form input:focus {
+            border-color: #00b3b3;
+        }
+
+        /* تنسيق الزر "إنشاء الحساب" */
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #00b3b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #009999;
+        }
+
+        /* تنسيق الأزرار الاجتماعية */
+        .social-login {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .google-btn, .facebook-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .google-btn {
+            background-color: #db4437;
+        }
+
+        .google-btn:hover {
+            background-color: #c1351d;
+        }
+
+        .facebook-btn {
+            background-color: #3b5998;
+        }
+
+        .facebook-btn:hover {
+            background-color: #2d4373;
+        }
+
+        /* نص رابط "تسجيل الدخول" */
+        .redirect {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .redirect a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        .redirect a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>إنشاء حساب جديد</h2>
+        <form action="#" method="POST" class="signup-form">
+            <label for="name">الاسم الكامل</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">البريد الإلكتروني</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">كلمة المرور</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm-password">تأكيد كلمة المرور</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+
+            <button type="submit" class="submit-btn">إنشاء الحساب</button>
+        </form>
+
+        <div class="social-login">
+            <!-- زر جوجل -->
+            <button id="google-signin" class="google-btn" onclick="signInWithGoogle()">تسجيل بواسطة جوجل</button>
+
+            <!-- زر فيسبوك -->
+            <button class="facebook-btn" onclick="signInWithFacebook()">تسجيل بواسطة فيسبوك</button>
+        </div>
+
+        <p class="redirect">لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
+    </div>
+
+    <!-- إضافة مكتبة جافا سكريبت لجوجل -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- إضافة مكتبة جافا سكريبت لفيسبوك -->
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+    <script>
+        // 1. تسجيل الدخول بواسطة جوجل
+        function signInWithGoogle() {
+            gapi.load('auth2', function() {
+                var auth2 = gapi.auth2.init({
+                    client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', // استبدل مع معرف العميل الخاص بك
+                });
+
+                auth2.signIn().then(function(googleUser) {
+                    var profile = googleUser.getBasicProfile();
+                    var id_token = googleUser.getAuthResponse().id_token;
+                    console.log("ID Token:", id_token);
+                    console.log("User Info:", profile.getName(), profile.getEmail());
+                    // يمكنك هنا إتمام عملية التحقق أو إنشاء الحساب بناءً على هذه المعلومات
+                });
+            });
+        }
+
+        // 2. تسجيل الدخول بواسطة فيسبوك
+        function signInWithFacebook() {
+            FB.init({
+                appId: 'YOUR_FACEBOOK_APP_ID', // استبدل مع معرف تطبيق فيسبوك الخاص بك
+                cookie: true,
+                xfbml: true,
+                version: 'v13.0'
+            });
+
+            FB.login(function(response) {
+                if (response.status === 'connected') {
+                    FB.api('/me', function(response) {
+                        console.log("User Info:", response.name, response.email);
+                        // يمكنك هنا إتمام عملية التحقق أو إنشاء الحساب بناءً على هذه المعلومات
+                    });
+                } else {
+                    console.log("User cancelled login or did not fully authorize.");
+                }
+            }, {scope: 'public_profile,email'});
+        }
+    </script>
+</body>
+</html>
